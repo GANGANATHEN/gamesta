@@ -1,0 +1,56 @@
+import {
+  cartoon_1,
+  cartoon_2,
+  cartoon_3,
+  cartoon_4,
+  cartoon_5,
+  cartoon_6,
+  cartoon_7,
+  cartoon_8,
+  cartoon_9,
+  homebg,
+  laptop,
+  logo,
+  telegram,
+  twiter,
+  youtube,
+} from "../../public/assets/index";
+
+export const navLinks = [
+  { name: "Abuot Us", link: "/" },
+  { name: "Play 2 Earn", link: "/" },
+  { name: "The DAO", link: "/" },
+  { name: "Business Model", link: "/" },
+  { name: "Ecosystem", link: "/" },
+  { name: "Road Map", link: "/" },
+  { name: "Team", link: "/" },
+  { name: "PartnerShip", link: "/" },
+  { name: "Contact Us", link: "/" },
+];
+
+export const homecontent = {
+  heading: "A.I Powered Guild for NFT Gaming",
+  para: "Gamesta is enabling investors to connect and empower thousands of under privileged players through out the World",
+  community: "Join our Community",
+  social: [
+    { name: "You tube", icon: youtube },
+    { name: "Twitter", icon: twiter },
+    { name: "Telegram", icon: telegram },
+  ],
+  countdown: "IDO countdown",
+  time: 12.0,
+  images: [
+    { id: 0, name: "logo", icon: logo },
+    { id: 1, name: "homebg", icon: homebg },
+    { id: 2, name: "cartoon_1", icon: cartoon_1 },
+    { id: 3, name: "cartton_2", icon: cartoon_2 },
+    { id: 4, name: "cartton_3", icon: cartoon_3 },
+    { id: 5, name: "cartton_4", icon: cartoon_4 },
+    { id: 6, name: "cartton_5", icon: cartoon_5 },
+    { id: 7, name: "cartton_6", icon: cartoon_6 },
+    { id: 8, name: "cartton_7", icon: cartoon_7 },
+    { id: 9, name: "cartton_8", icon: cartoon_8 },
+    { id: 10, name: "cartton_9", icon: cartoon_9 },
+    { id: 11, name: "labtop", icon: laptop },
+  ],
+};
