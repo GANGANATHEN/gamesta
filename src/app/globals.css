@@ -19,7 +19,6 @@
   }
 }
 
-
 body {
   background: var(--background);
   color: var(--foreground);
@@ -45,7 +44,9 @@ body {
   --color-white-100: #f3f3f3;
 
   /* Backgrounds */
-  --background-image-hero-pattern: url('/assets/bg/homebg.svg');
+  --background-image-hero-pattern: url("/assets/bg/homebg.svg");
 }
 
-
+.padding {
+  @apply px-[3%];
+}
