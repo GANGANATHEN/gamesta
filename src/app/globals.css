@@ -50,3 +50,7 @@ body {
 .padding {
   @apply px-[3%];
 }
+
+.revolver-chamber {
+  transform-origin: center center; /* This ensures all rotations happen from the exact center */
+}

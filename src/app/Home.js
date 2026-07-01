@@ -5,13 +5,12 @@ import { homecontent, navLinks } from "@/data/data";
 import Link from "next/link";
 import {
   initHomepageAnimation,
-  animateRevolverMenu,
 } from "@/lib/gsapanimation";
+import RevolverMenu from "@/components/revolverMenu";
 
 const Homepage = () => {
   const container = useRef(null);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -19,36 +18,6 @@ const Homepage = () => {
     }, 500);
     return () => clearTimeout(timer);
   }, []);
-
-  useEffect(() => {
-    if (menuOpen) {
-      animateRevolverMenu(true);
-    }
-  }, [menuOpen]);
-
-  const handleFireTrigger = () => {
-    // Current activeIndex-ai fire pannunga
-    handleSelection(navLinks[activeIndex]);
-  };
-
-  const handleSelection = (nav, index) => {
-    const tl = gsap.timeline({ onComplete: () => navigate(nav.link) });
-
-    // 1. All bullets stop rotating
-    tl.to(".revolver-chamber", { rotation: 0, duration: 0.5 });
-
-    // 2. Fire the specific bullet
-    tl.to(`.bullet-${index}`, {
-      y: -500, // Bullet fires forward
-      scale: 1.5,
-      opacity: 0,
-      duration: 0.4,
-      ease: "power2.in",
-    });
-
-    // 3. Screen Flash/Shake (Gaming effect)
-    tl.to("body", { x: 10, y: 10, repeat: 5, yoyo: true, duration: 0.05 });
-  };
 
   return (
     <div
@@ -89,54 +58,7 @@ const Homepage = () => {
 
       {/* Gaming Arcade Overlay */}
       {menuOpen && (
-        <div className="xl:hidden fixed inset-0 z-50 bg-[#0a0a0a] flex flex-col items-center justify-center">
-          {/* Revolver Chamber Effect */}
-          <div className="relative w-80 h-80 rounded-full border-4 border-dashed border-gray-700 flex items-center justify-center animate-[spin_20s_linear_infinite]">
-            {navLinks.map((nav, index) => {
-              const rotation = (360 / navLinks.length) * index;
-              return (
-                <button
-                  key={nav.name}
-                  onClick={() => handleSelection(nav, index)}
-                  className="absolute flex flex-col items-center group cursor-pointer"
-                  style={{
-                    transform: `rotate(${rotation}deg) translateY(-120px)`,
-                  }}
-                >
-                  {/* Bullet Body */}
-                  <div
-                    className="relative w-16 h-28 bg-gradient-to-b from-yellow-600 to-yellow-800 rounded-lg border-2 border-yellow-900 
-                      flex items-center justify-center overflow-hidden group-hover:scale-105 transition-transform duration-300"
-                  >
-                    {/* Text Inside Bullet */}
-                    <span
-                      className="text-white text-xs font-bold uppercase rotate-90 whitespace-nowrap 
-                         group-hover:translate-x-full transition-transform duration-500"
-                    >
-                      {nav.name}
-                    </span>
-
-                    {/* Hover Reveal Effect */}
-                    <span
-                      className="absolute text-yellow-300 text-xs font-bold uppercase rotate-90 
-                         -translate-x-full group-hover:translate-x-0 transition-transform duration-500"
-                    >
-                      {nav.name}
-                    </span>
-                  </div>
-                </button>
-              );
-            })}
-          </div>
-
-          {/* Close Trigger */}
-          <button
-            className="mt-20 text-red-500 font-mono"
-            onClick={() => setMenuOpen(false)}
-          >
-            [ PULL TRIGGER TO EXIT ]
-          </button>
-        </div>
+        <RevolverMenu menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
       )}
 
       {/* bg image */}

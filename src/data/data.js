@@ -17,15 +17,15 @@ import {
 } from "../../public/assets/index";
 
 export const navLinks = [
-  { name: "Abuot Us", link: "/" },
-  { name: "Play 2 Earn", link: "/" },
-  { name: "The DAO", link: "/" },
-  { name: "Business Model", link: "/" },
-  { name: "Ecosystem", link: "/" },
-  { name: "Road Map", link: "/" },
-  { name: "Team", link: "/" },
-  { name: "PartnerShip", link: "/" },
-  { name: "Contact Us", link: "/" },
+  { name: "Abuot Us", link: "/home" },
+  { name: "Play 2 Earn", link: "/home" },
+  { name: "The DAO", link: "/home" },
+  { name: "Business Model", link: "/home" },
+  { name: "Ecosystem", link: "/home" },
+  { name: "Road Map", link: "/home" },
+  { name: "Team", link: "/team" },
+  { name: "PartnerShip", link: "/home" },
+  { name: "Contact Us", link: "/home" },
 ];
 
 export const homecontent = {

@@ -1,45 +1,82 @@
 // lib/gsapanimation.js
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Draggable } from "gsap/Draggable";
+import { MotionPathPlugin } from "gsap/MotionPathPlugin";
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, Draggable, MotionPathPlugin);
 
-export const animateRevolverMenu = (isOpen) => {
+export const animateMenuOpen = () => {
   const tl = gsap.timeline();
-
-  if (isOpen) {
-    // Menu Open Animation
-    tl.fromTo(
-      ".revolver-chamber",
-      { rotation: -90, scale: 0 },
-      { rotation: 0, scale: 1, duration: 1, ease: "back.out(1.7)" },
-    );
-    tl.fromTo(
-      ".bullet-item",
-      { opacity: 0, y: 20 },
-      { opacity: 1, y: 0, stagger: 0.1, ease: "power2.out" },
-      "-=0.5",
-    );
-  }
+  tl.fromTo(
+    ".revolver-chamber",
+    { scale: 0, opacity: 0 },
+    { scale: 1, opacity: 1, duration: 0.7, ease: "back.out(1.7)" },
+  );
+  // tl.from(
+  //   ".bullet-item",
+  //   {
+  //     opacity: 1,
+  //     y: 20,
+  //     duration: 0.5,
+  //     ease: "power2.out",
+  //   },
+  //   "-=0.4", // Ithu chamber animation-oda sync aaga help pannum
+  // );
 };
 
-export const animateFire = (index, onComplete) => {
-  const tl = gsap.timeline({ onComplete });
+export const initDraggableChamber = (target, totalLinks, onUpdate) => {
+  const angle = 360 / totalLinks;
 
-  // 1. Stop rotation and fire selected bullet
-  tl.to(".revolver-chamber", { rotation: 0, duration: 0.3 });
-
-  // 2. Fire the bullet
-  tl.to(`.bullet-${index}`, {
-    y: -600,
-    scale: 1.5,
-    opacity: 0,
-    duration: 0.4,
-    ease: "power2.in",
+  return Draggable.create(target, {
+    type: "rotation",
+    inertia: true,
+    onDrag: function () {
+      // Drag pannum pothu real-time-a trigger aagum
+      const rotation = this.rotation;
+      const index = Math.abs(Math.round(rotation / angle)) % totalLinks;
+      onUpdate(index);
+    },
+    snap: (value) => {
+      return Math.round(value / angle) * angle;
+    },
   });
+};
 
-  // 3. Screen Shake
-  tl.to("body", { x: 10, y: 10, repeat: 5, yoyo: true, duration: 0.05 }, 0);
+export const getRevolverTimeline = (index, totalLinks, onComplete) => {
+  const tl = gsap.timeline({ onComplete: () => setTimeout(onComplete, 300) });
+  const isDesktop = window.innerWidth >= 640;
+
+  const targetDegree = -((isDesktop ? -90 : 0) + (360 / totalLinks) * index);
+
+  tl.to(".revolver-chamber", {
+    rotation: `${targetDegree}_short`,
+    duration: 0.8,
+    ease: "power3.inOut",
+  })
+
+    .set(`.bullet-${index}`, { opacity: 0 })
+    .set("#fire-bullet", { opacity: 1 })
+
+    .to(
+      "#fire-bullet",
+      {
+        duration: 0.5,
+        x: isDesktop ? 300 : 0,
+        y: isDesktop ? 0 : -300,
+        ease: "power2.out",
+      },
+      "-=0.3",
+    )
+    .to("#fire-bullet", {
+      duration: 0.4,
+      x: isDesktop ? "+=600" : 0,
+      y: isDesktop ? 0 : "-=600",
+      opacity: 0,
+      ease: "power4.in",
+    });
+
+  return tl;
 };
 
 export const initHomepageAnimation = (containerRef) => {
