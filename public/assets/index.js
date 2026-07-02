@@ -11,7 +11,7 @@ import cartoon_7 from "./cartoon/7.svg";
 import cartoon_8 from "./cartoon/8.svg";
 import cartoon_9 from "./cartoon/9.svg";
 // home
-import laptop from "./home/laptop.png";
+import laptop from "./home/laptop.svg";
 import telegram from "./home/telegram.svg";
 import twiter from "./home/twiter.svg";
 import youtube from "./home/youtube.svg";

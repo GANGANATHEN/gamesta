@@ -1,4 +1,4 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Montserrat, Oswald } from "next/font/google";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -6,8 +6,13 @@ const geistSans = Geist({
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
+const geistMono = Montserrat({
   variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
+
+const bodoniModa = Oswald({
+  variable: "--font-bodoni-moda",
   subsets: ["latin"],
 });
 
@@ -20,7 +25,7 @@ export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased no-scrollbar`}
+      className={`${geistSans.variable} ${geistMono.variable} ${bodoniModa.variable} h-full antialiased no-scrollbar`}
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>

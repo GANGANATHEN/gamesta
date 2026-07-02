@@ -3,9 +3,7 @@ import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { homecontent, navLinks } from "@/data/data";
 import Link from "next/link";
-import {
-  initHomepageAnimation,
-} from "@/lib/gsapanimation";
+import { initHomepageAnimation } from "@/lib/gsapanimation";
 import RevolverMenu from "@/components/revolverMenu";
 
 const Homepage = () => {
@@ -26,7 +24,9 @@ const Homepage = () => {
     >
       <nav className="nav-bar padding w-full fixed z-50 top-0 left-0 flex justify-between items-center p-3 gap-3 2xl:gap-x-25">
         {/* Logo Spot - Same place for animation */}
-        <div className="nav-logo-spot w-[40%] xl:w-[20%] h-12.5"></div>
+        <div className="w-[40%] xl:w-[20%] h-12.5">
+          <div className="nav-logo-spot w-full h-full mt-2"></div>
+        </div>
         <div className="w-[70%] hidden xl:flex justify-between items-center gap-4 text-[14px]">
           {navLinks.map((nav) => (
             <Link
@@ -68,6 +68,7 @@ const Homepage = () => {
         fill
         className="bg-image object-cover scale-155"
       />
+      
       <div className="relative flex flex-col mt-30">
         {/* logo */}
         <Image
@@ -123,29 +124,37 @@ const Homepage = () => {
       </div>
 
       <div className="padding absolute flex inset-0 w-full justify-center items-center z-1">
-        <div className="relative w-full h-full mt-70">
-          <div className="content text-4xl bold">{homecontent.heading}</div>
-          <p className="content">{homecontent.para}</p>
-          <div className="content space-y-4">
-            <p>{homecontent.community}</p>
-            <div className="flex gap-5">
-              {homecontent.social.map((value) => (
-                <div
-                  key={value.name}
-                  className="flex items-center justify-center gap-2 border-2 border-white rounded-lg px-4 py-2"
-                >
-                  <Image
-                    src={value.icon}
-                    alt={value.name}
-                    className="w-8 h-8"
-                  />
-                  <p>{value.name}</p>
+        <div className="relative flex flex-col justify-between py-[10%] w-full h-full overflow-hidden">
+
+          <div className="space-y-5 z-1">
+            <div className="content text-5xl font-moda font-bold">
+              {homecontent.heading}
+            </div>
+            <div className="ml-20 space-y-4 2xl:space-y-6">
+              <p className="content text-2xl w-180">{homecontent.para}</p>
+              <div className="content space-y-4">
+                <p className="font-sans text-lg">{homecontent.community}</p>
+                <div className="flex gap-5">
+                  {homecontent.social.map((value) => (
+                    <div
+                      key={value.name}
+                      className="flex items-center justify-center gap-2 border-2 border-white rounded-lg px-4 py-2"
+                    >
+                      <Image
+                        src={value.icon}
+                        alt={value.name}
+                        className="w-8 h-8"
+                      />
+                      <p>{value.name}</p>
+                    </div>
+                  ))}
                 </div>
-              ))}
+              </div>
             </div>
           </div>
-          <div className="content flex flex-col gap-y-2 mt-5">
-            <div>{homecontent.countdown}</div>
+
+          <div className="content z-1 flex flex-col gap-y-2 mt-5">
+            <div className="font-sans text-lg">{homecontent.countdown}</div>
             <div className="flex gap-1">
               <div className="flex flex-col justify-center items-center w-fit bg-white rounded-lg">
                 <div className="w-full p-4 text-[36px] bg-[#00B3E8] rounded-lg">
@@ -181,7 +190,8 @@ const Homepage = () => {
               </div>
             </div>
           </div>
-          <div className="laptop absolute right-[10%] 2xl:right-[4%] bottom-10 2xl:bottom-20 border flex justify-baseline">
+
+          <div className="laptop absolute right-[3%] 2xl:right-[4%] -bottom-20 2xl:-bottom-15  flex justify-baseline">
             <Image
               src={homecontent.images[11].icon}
               alt={homecontent.images[11].name}
