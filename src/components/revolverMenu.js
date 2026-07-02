@@ -67,15 +67,14 @@ const RevolverMenu = ({ menuOpen, setMenuOpen }) => {
             >
               {/* Bullet */}
               <div
-                className={`w-12 h-20 bg-gradient-to-b from-yellow-600 to-yellow-800 rounded-md border-2 border-yellow-900 flex items-center justify-center relative
-            bullet-${index} ${index === activeIndex ? "scale-125 border-yellow-400 shadow-[0_0_20px_#fbbf24]" : ""}`}
+                className={`w-12 h-20 bg-linear-to-b from-yellow-600 to-yellow-800 rounded-md border-2 border-yellow-900 flex items-center justify-center relative
+              bullet-${index} ${index === activeIndex ? "scale-125 border-yellow-400 shadow-[0_0_20px_#fbbf24]" : ""}`}
               >
                 <span className="text-white text-[10px] font-bold uppercase rotate-90">
                   {nav.name.substring(0, 4)}
                 </span>
-
                 {/* Hover Full Text Reveal */}
-                <div className="absolute -top-12 left-1/2 -translate-x-1/2 bg-yellow-500 text-black px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap text-xs font-bold shadow-[0_0_10px_#eab308]">
+                <div className="absolute -top-12 left-1/2 -translate-x-1/2 bg-yellow-500 text-black px-2  py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap text-xs font-bold shadow-[0_0_10px_#eab308]">
                   {nav.name}
                 </div>
               </div>
@@ -103,4 +102,6 @@ const RevolverMenu = ({ menuOpen, setMenuOpen }) => {
     </div>
   );
 };
+
+
 export default RevolverMenu;
