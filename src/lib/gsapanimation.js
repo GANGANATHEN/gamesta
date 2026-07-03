@@ -140,24 +140,27 @@ export const initHomepageAnimation = (containerRef) => {
     0,
   );
 
-  tl.from(
+  gsap.set(".laptop", { x: 400, y: 400, opacity: 0 });
+  gsap.set(".content", { x: -400, y: 400, opacity: 0 });
+
+  tl.to(
     ".laptop",
     {
-      x: 400,
-      y: 400,
-      opacity: 0,
+      x: 0,
+      y: 0,
+      opacity: 1,
       ease: "power1.inOut",
       duration: 1.4,
     },
     0,
   );
 
-  tl.from(
+  tl.to(
     ".content",
     {
-      x: -400,
-      y: 400,
-      opacity: 0,
+      x: 0,
+      y: 0,
+      opacity: 1,
       ease: "power1.inOut",
       duration: 1.4,
     },
@@ -167,11 +170,11 @@ export const initHomepageAnimation = (containerRef) => {
   const targets = [
     { class: ".img-1", x: 220, y: 90 },
     { class: ".img-2", x: 150, y: 180 },
-    { class: ".img-3", x: -500, y: 40 },
-    { class: ".img-4", x: -50, y: 40 },
+    { class: ".img-3", x: -500, y: 30 },
+    { class: ".img-4", x: -25, y: 42 },
     { class: ".img-5", x: 700, y: -50 },
     { class: ".img-6", x: -30, y: -230 },
-    { class: ".img-7", x: -10, y: -5 },
+    { class: ".img-7", x: -2, y: 25 },
     { class: ".img-8", x: 50, y: 245 },
     { class: ".img-9", x: 45, y: 245 },
   ];
@@ -189,6 +192,21 @@ export const initHomepageAnimation = (containerRef) => {
       0,
     );
   });
-
   return tl;
+};
+
+export const animateCountdown = (containerRef) => {
+  const elements = containerRef.current.querySelectorAll(".countdown-item");
+
+  gsap.fromTo(
+    elements,
+    { opacity: 0, y: 20 },
+    {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      stagger: 0.2,
+      ease: "power2.out",
+    },
+  );
 };

@@ -38,7 +38,7 @@ export const homecontent = {
     { name: "Telegram", icon: telegram },
   ],
   countdown: "IDO countdown",
-  time: 12.0,
+  targetDate: `2026-08-12T18:30:00Z`,
   images: [
     { id: 0, name: "logo", icon: logo },
     { id: 1, name: "homebg", icon: homebg },
