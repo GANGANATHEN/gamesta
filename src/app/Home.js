@@ -26,6 +26,53 @@ const Homepage = () => {
     }, 500);
   }, []);
 
+  const anchors = [
+    // img-1
+    `w-5 h-5 bottom-30 -left-15
+     sm:bottom-[45%] sm:left-[-10%]
+     md:bottom-40 md:-left-13
+     min-[1800px]:bottom-[50%]! min-[1800px]:!left-[-12%]`,
+     // img-2
+    `w-5 h-5 -top-4 -left-30 
+     sm:top-[-17%] sm:left-[-25%] md:-top-17 md:-left-25
+     min-[1800px]:top-[-17%]! min-[1800px]:left-[-13%]!`,
+     // img-3
+    `w-5 h-5 -top-18 left-3
+     sm:top-[-28%] sm:left-14 md:-top-32 md:left-16
+     xl:-top-37
+     min-[1800px]:top-[-38%]! min-[1800px]:left-[13%]!`,
+     // img-4
+    `w-5 h-5 -top-16 left-6
+     sm:top-[-31%] sm:left-[22%] md:-top-18 md:left-26
+     lg:-top-16 lg:left-30 xl:-top-24 xl:left-34 2xl:-top-28 2xl:left-37
+     min-[1800px]:top-[-30%]! min-[1800px]:left-[26%]!`,
+     // img-5
+    `w-5 h-5 -top-10 left-24
+     sm:top-[-25%] sm:left-[37%] md:-top-25 md:left-37
+     lg:-top-28 lg:left-42 xl:-top-36 xl:left-46 2xl:-top-38 2xl:left-54
+     min-[1800px]:top-[-40%]! min-[1800px]:left-[30%]!`,
+     // img-6
+    `w-5 h-5 -top-10 left-33
+     sm:top-[-20%] sm:left-[43%] md:-top-17 md:left-46
+     lg:-top-15 xl:-top-23 xl:left-60 2xl:left-74
+     min-[1800px]:top-[-30%]! min-[1800px]:left-[40%]!`,
+     // img-7
+    `w-5 h-5 -top-14 left-34
+     sm:top-[-37%] sm:left-[42%] md:-top-24 md:left-52
+     xl:-top-28 xl:left-80 2xl:-top-36 2xl:left-95
+     min-[1800px]:top-[-45%]! min-[1800px]:right-[42%]!`,
+     // img-8
+    `w-5 h-5 bottom-35 right-4
+     sm:bottom-[60%] sm:right-[9%] md:bottom-45 md:right-7
+     lg:right-4
+     min-[1800px]:bottom-[50%]! min-[1800px]:right-[2%]!`,
+     // img-9
+    `w-5 h-5 bottom-33 right-11
+     sm:bottom-[58%] sm:right-[16%] md:bottom-45 md:right-15
+     lg:right-13 xl:right-15
+     min-[1800px]:bottom-[48%]! min-[1800px]:right-[9%]!`,
+  ];
+
   if (!mounted) {
     return null; // Render nothing on the server side
   }
@@ -92,7 +139,7 @@ const Homepage = () => {
         <Image
           src={homecontent.images[2].icon}
           alt={homecontent.images[2].name}
-          className="img-1 border-2 border-accent z-1 absolute top-[88%] left-[17%] 2xl:left-97 min-[1800px]:top-32! min-[1800px]:left-[38%]! w-36 h-full"
+          className="img-1 z-1 absolute top-[88%] left-[17%] 2xl:left-97 min-[1800px]:top-32! min-[1800px]:left-[38%]! w-36 h-full"
         />
         <Image
           src={homecontent.images[3].icon}
@@ -120,8 +167,8 @@ const Homepage = () => {
         <Image
           src={homecontent.images[6].icon}
           alt={homecontent.images[6].name}
-          className="img-5 z-1 absolute w-26 h-full -top-6 left-8 -rotate-12 sm:-top-12 sm:left-22
-          md:-top-15 md:left-29 lg:-top-17 lg:left-42 xl:-top-19 xl:left-52 2xl:-top-23 2xl:left-68 min-[1800px]:-top-25! min-[1800px]:left-[27%]!"
+          className="img-5 z-1 absolute w-26 h-10 2xl:h-20 -top-8 left-8 -rotate-12 
+          sm:left-22 md:left-29  lg:left-42 xl:h-15 xl:-top-12 xl:left-52 2xl:-top-23 2xl:left-68 min-[1800px]:-top-15! min-[1800px]:left-[27%]!"
         />
         <Image
           src={homecontent.images[7].icon}
@@ -149,13 +196,16 @@ const Homepage = () => {
       </div>
 
       <div className="padding  absolute flex inset-0 w-full justify-center items-center z-1">
-        <div className="relative flex flex-col justify-between py-[25%] sm:py-[15%] lg:py-[10%] w-full h-full overflow-hidden">
+        <div
+          className="relative flex flex-col justify-between max-[376px]:pt-[25%] max-[432px]:pt-[20%] 
+        max-[500px]:pt-[17%] max-[640px]:pt-[15%] max-[640px]:pb-[5%] sm:py-[15%] lg:py-[10%] w-full h-full overflow-hidden"
+        >
           <div className="space-y-5 z-1">
             <div className="content opacity-0 text-2xl md:text-4xl lg:text-5xl font-moda font-bold">
               {homecontent.heading}
             </div>
             <div className="sm:pl-7 md:pl-20 space-y-4 2xl:space-y-6">
-              <p className="content opacity-0 text-md md:text-lg  lg:text-2xl lg:w-180">
+              <p className="content max-sm:max-w-sm opacity-0 text-md md:text-lg lg:text-2xl lg:w-180">
                 {homecontent.para}
               </p>
               <div className="content opacity-0 space-y-4">
@@ -185,21 +235,35 @@ const Homepage = () => {
           </div>
 
           <div
-            className="laptop border border-accent opacity-0 absolute 
+            className="absolute 
             max-[1024px]:flex 
-            max-[1024px]:justify-center 
+            max-[640px]:justify-center
+            max-[1024px]:justify-end 
             max-[1024px]:w-full 
-            max-[1024px]:-bottom-40
+            max-[1024px]:bottom-[20%]
             lg:right-[3%] 
             2xl:right-[4%] 
-            lg:-bottom-20 
-            2xl:-bottom-15"
+            lg:bottom-4 
+            2xl:bottom-15"
           >
-            <Image
-              src={homecontent.images[11].icon}
-              alt={homecontent.images[11].name}
-              className="laptop-img w-90 sm:w-110 md:w-120 xl:w-150 2xl:w-180 h-150 object-contain"
-            />
+            <div
+              className="relative inline-block w-90 h-60 sm:w-110 md:w-120 md:h-70
+            lg:h-80 xl:w-150 xl:h-90 2xl:w-180 2xl:h-115"
+            >
+              <Image
+                src={homecontent.images[11].icon}
+                alt={homecontent.images[11].name}
+                fill
+                className="laptop opacity-0 object-contain"
+              />
+
+              {anchors.map((pos, i) => (
+                <div
+                  key={i}
+                  className={`anchor anchor-${i + 1} absolute w-1 h-1 ${pos}`}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </div>

@@ -167,24 +167,22 @@ export const initHomepageAnimation = (containerRef) => {
     0,
   );
 
-  const targets = [
-    { class: ".img-1", x: 220, y: 90 },
-    { class: ".img-2", x: 150, y: 180 },
-    { class: ".img-3", x: -500, y: 30 },
-    { class: ".img-4", x: -25, y: 42 },
-    { class: ".img-5", x: 700, y: -50 },
-    { class: ".img-6", x: -30, y: -230 },
-    { class: ".img-7", x: -2, y: 25 },
-    { class: ".img-8", x: 50, y: 245 },
-    { class: ".img-9", x: 45, y: 245 },
-  ];
+  const images = Array.from({ length: 9 }, (_, i) => i + 1);
 
-  targets.forEach((img) => {
+  images.forEach((id) => {
+    const img = document.querySelector(`.img-${id}`);
+    const anchor = document.querySelector(`.anchor-${id}`);
+
+    if (!img || !anchor) return;
+
+    const imgRect = img.getBoundingClientRect();
+    const anchorRect = anchor.getBoundingClientRect();
+
     tl.to(
-      img.class,
+      img,
       {
-        x: img.x,
-        y: img.y,
+        x: anchorRect.left - imgRect.left,
+        y: anchorRect.top - imgRect.top,
         rotate: 0,
         duration: 1.4,
         ease: "power1.inOut",
@@ -192,6 +190,7 @@ export const initHomepageAnimation = (containerRef) => {
       0,
     );
   });
+
   return tl;
 };
 
