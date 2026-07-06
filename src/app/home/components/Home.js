@@ -12,13 +12,14 @@ const Homepage = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
 
-  useEffect(() => {
-    if (!mounted) return; // Prevent animation on server side
-    const timer = setTimeout(() => {
-      initHomepageAnimation(container);
-    }, 500);
-    return () => clearTimeout(timer);
-  }, [mounted]);
+  // call animation
+  // useEffect(() => {
+  //   if (!mounted) return; // Prevent animation on server side
+  //   const timer = setTimeout(() => {
+  //     initHomepageAnimation(container);
+  //   }, 500);
+  //   return () => clearTimeout(timer);
+  // }, [mounted]);
 
   useEffect(() => {
     setTimeout(() => {
