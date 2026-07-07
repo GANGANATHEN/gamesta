@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { initLenis, destroyLenis } from "@/lib/lenis";
+import { initLenis, destroyLenis } from "@/lib/lenis/lenis";
 
 export default function ScrollWrapper({ children }) {
   useEffect(() => {

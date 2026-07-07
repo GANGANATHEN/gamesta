@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { animateCountdown } from "@/lib/gsapanimation";
+import { animateCountdown } from "@/lib/animations/gsapanimation";
 
 const Countdown = ({ targetDate }) => {
   const containerRef = useRef(null);

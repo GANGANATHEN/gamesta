@@ -1,6 +1,9 @@
 import { Geist, Montserrat, Oswald } from "next/font/google";
 import "./globals.css";
+import Script from "next/script";
 import ScrollWrapper from "@/scrollWrapper/scrollWrapper";
+import Preloader from "@/components/Preloader";
+import GlobalTransition from "@/components/GlobalTransition";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,9 +31,21 @@ export default function RootLayout({ children }) {
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} ${bodoniModa.variable} h-full antialiased no-scrollbar`}
     >
+      <head>
+          <Script id="scroll-restoration" strategy="beforeInteractive">
+            {`
+            if ('scrollRestoration' in history) {
+              history.scrollRestoration = 'manual';
+            }
+          `}
+          </Script>
+      </head>
       <body className="min-h-full flex flex-col">
-        <ScrollWrapper>{children}</ScrollWrapper>
-        {/* {children} */}
+        <ScrollWrapper>
+          {/* <GlobalTransition /> */}
+          {/* <Preloader /> */}
+          {children}
+        </ScrollWrapper>
       </body>
     </html>
   );

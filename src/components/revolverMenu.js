@@ -4,7 +4,7 @@ import {
   getRevolverTimeline,
   animateMenuOpen,
   initDraggableChamber,
-} from "@/lib/gsapanimation";
+} from "@/lib/animations/gsapanimation";
 import { navLinks } from "@/data/data";
 import gsap from "gsap";
 
@@ -102,6 +102,5 @@ const RevolverMenu = ({ menuOpen, setMenuOpen }) => {
     </div>
   );
 };
-
 
 export default RevolverMenu;

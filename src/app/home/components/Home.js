@@ -3,9 +3,13 @@ import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { homecontent, navLinks } from "@/data/data";
 import Link from "next/link";
-import { initHomepageAnimation } from "@/lib/gsapanimation";
+import { initHomepageAnimation } from "@/lib/animations/gsapanimation";
 import RevolverMenu from "@/components/revolverMenu";
 import Countdown from "@/components/counDown";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const Homepage = () => {
   const container = useRef(null);
@@ -13,13 +17,37 @@ const Homepage = () => {
   const [mounted, setMounted] = useState(false);
 
   // call animation
+  useEffect(() => {
+    if (!mounted) return;
+
+    let cleanup = () => {};
+
+    const timer = setTimeout(() => {
+      cleanup = initHomepageAnimation(container);
+    }, 500);
+
+    return () => {
+      clearTimeout(timer);
+      cleanup();
+    };
+  }, [mounted]);
+
   // useEffect(() => {
-  //   if (!mounted) return; // Prevent animation on server side
-  //   const timer = setTimeout(() => {
-  //     initHomepageAnimation(container);
-  //   }, 500);
-  //   return () => clearTimeout(timer);
-  // }, [mounted]);
+  //   const images = document.images;
+
+  //   Promise.all(
+  //     [...images].map((img) => {
+  //       if (img.complete) return Promise.resolve();
+
+  //       return new Promise((resolve) => {
+  //         img.onload = resolve;
+  //         img.onerror = resolve;
+  //       });
+  //     }),
+  //   ).then(() => {
+  //     ScrollTrigger.refresh();
+  //   });
+  // }, []);
 
   useEffect(() => {
     setTimeout(() => {
@@ -33,46 +61,48 @@ const Homepage = () => {
      sm:bottom-[45%] sm:left-[-10%]
      md:bottom-40 md:-left-13
      min-[1800px]:bottom-[50%]! min-[1800px]:!left-[-12%]`,
-     // img-2
+    // img-2
     `w-5 h-5 -top-4 -left-30 
      sm:top-[-17%] sm:left-[-25%] md:-top-17 md:-left-25
      min-[1800px]:top-[-17%]! min-[1800px]:left-[-13%]!`,
-     // img-3
+    // img-3
     `w-5 h-5 -top-18 left-3
      sm:top-[-28%] sm:left-14 md:-top-32 md:left-16
      xl:-top-37
      min-[1800px]:top-[-38%]! min-[1800px]:left-[13%]!`,
-     // img-4
+    // img-4
     `w-5 h-5 -top-16 left-6
      sm:top-[-31%] sm:left-[22%] md:-top-18 md:left-26
      lg:-top-16 lg:left-30 xl:-top-24 xl:left-34 2xl:-top-28 2xl:left-37
      min-[1800px]:top-[-30%]! min-[1800px]:left-[26%]!`,
-     // img-5
+    // img-5
     `w-5 h-5 -top-10 left-24
      sm:top-[-25%] sm:left-[37%] md:-top-25 md:left-37
      lg:-top-28 lg:left-42 xl:-top-36 xl:left-46 2xl:-top-38 2xl:left-54
      min-[1800px]:top-[-40%]! min-[1800px]:left-[30%]!`,
-     // img-6
+    // img-6
     `w-5 h-5 -top-10 left-33
      sm:top-[-20%] sm:left-[43%] md:-top-17 md:left-46
      lg:-top-15 xl:-top-23 xl:left-60 2xl:left-74
      min-[1800px]:top-[-30%]! min-[1800px]:left-[40%]!`,
-     // img-7
+    // img-7
     `w-5 h-5 -top-14 left-34
      sm:top-[-37%] sm:left-[42%] md:-top-24 md:left-52
      xl:-top-28 xl:left-80 2xl:-top-36 2xl:left-95
      min-[1800px]:top-[-45%]! min-[1800px]:right-[42%]!`,
-     // img-8
+    // img-8
     `w-5 h-5 bottom-35 right-4
      sm:bottom-[60%] sm:right-[9%] md:bottom-45 md:right-7
      lg:right-4
      min-[1800px]:bottom-[50%]! min-[1800px]:right-[2%]!`,
-     // img-9
+    // img-9
     `w-5 h-5 bottom-33 right-11
      sm:bottom-[58%] sm:right-[16%] md:bottom-45 md:right-15
      lg:right-13 xl:right-15
      min-[1800px]:bottom-[48%]! min-[1800px]:right-[9%]!`,
   ];
+
+  console.log("Home render");
 
   if (!mounted) {
     return null; // Render nothing on the server side
@@ -81,9 +111,9 @@ const Homepage = () => {
   return (
     <div
       ref={container}
-      className="relative h-dvh text-white flex flex-col justify-center items-center overflow-hidden"
+      className="relative h-dvh bg-[#EBF9FF] text-white flex flex-col justify-center items-center overflow-hidden"
     >
-      <nav className="nav-bar opacity-0 padding w-full fixed z-50 top-0 left-0 flex justify-between items-center p-3 gap-3 2xl:gap-x-25">
+      <nav className="nav-bar opacity-0 padding w-full absolute z-50 top-0 left-0 flex justify-between items-center p-3 gap-3 2xl:gap-x-25">
         {/* Logo Spot - Same place for animation */}
         <div className="w-[40%] xl:w-[20%] h-12.5">
           <div className="nav-logo-spot w-full h-full mt-4 sm:mt-2"></div>
@@ -127,7 +157,7 @@ const Homepage = () => {
         src={homecontent.images[1].icon}
         alt={homecontent.images[1].name}
         fill
-        className="bg-image object-cover scale-155"
+        className="bg-image object-cover scale-155 lg:[clip-path:polygon(0%_0%,100%_0%,100%_83%,0%_100%)]"
       />
 
       <div className="relative flex flex-col mt-30">

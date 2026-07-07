@@ -1,0 +1,867 @@
+// utils/initScrollAnimations.js
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { SplitText } from "gsap/SplitText";
+
+gsap.registerPlugin(ScrollTrigger);
+
+// ---------------------------------------------------------------------------------------------- \\
+// ### OTHER ANIMATIONS ### //
+
+// image tilt effect
+export function initImageTiltEffect() {
+  const handler = (e) => {
+    const x = (e.clientX / window.innerWidth - 0.5) * 30;
+    const y = (e.clientY / window.innerHeight - 0.5) * 30;
+
+    gsap.to(".discover-image", {
+      x,
+      y,
+      duration: 1.2,
+      ease: "power3.out",
+    });
+  };
+
+  document.addEventListener("mousemove", handler);
+
+  // --- cleanup function ---
+  return () => {
+    document.removeEventListener("mousemove", handler);
+    gsap.killTweensOf(".discover-image");
+  };
+}
+// card tilt effect
+export function initCardTilt() {
+  const cards = Array.from(document.querySelectorAll(".tilt-card"));
+  if (!cards.length) return () => {};
+
+  // disable on touch devices (optional)
+  const isTouch = window.matchMedia("(pointer: coarse)").matches;
+
+  const handlers = [];
+
+  cards.forEach((card) => {
+    const bounds = () => card.getBoundingClientRect();
+    const maxTilt = parseFloat(card.dataset.tilt || "15");
+    const useGlare = card.dataset.glare === "true";
+    const glare = useGlare ? card.querySelector(".tilt-glare") : null;
+
+    // base styles
+    card.style.transformStyle = "preserve-3d";
+    card.style.perspective = "800px";
+    if (glare) {
+      glare.style.background =
+        "radial-gradient(circle at 50% 50%, rgba(255,255,255,0.35), transparent 60%)";
+      glare.style.mixBlendMode = "soft-light";
+      glare.style.opacity = "0";
+      glare.style.transition = "opacity 200ms ease";
+    }
+
+    let rafId = null;
+
+    const onEnter = () => {
+      if (isTouch) return;
+      gsap.to(card, { duration: 0.28, scale: 1.02, ease: "power2.out" });
+      if (glare) glare.style.opacity = "1";
+    };
+
+    const onMove = (e) => {
+      if (isTouch) return;
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => {
+        const r = bounds();
+        const cx = r.left + r.width / 2;
+        const cy = r.top + r.height / 2;
+        const dx = (e.clientX - cx) / (r.width / 2); // -1..1
+        const dy = (e.clientY - cy) / (r.height / 2); // -1..1
+
+        const rotY = gsap.utils.clamp(-1, 1, dx) * maxTilt; // left/right
+        const rotX = -gsap.utils.clamp(-1, 1, dy) * maxTilt; // up/down
+        const moveZ = 5; // subtle pop
+
+        gsap.to(card, {
+          rotateX: rotX,
+          rotateY: rotY,
+          z: moveZ,
+          transformPerspective: 1300,
+          duration: 0.35,
+          ease: "power3.out",
+        });
+
+        if (glare) {
+          const gx = ((dx + 1) / 2) * 100;
+          const gy = ((dy + 1) / 2) * 100;
+          glare.style.background = `radial-gradient(circle at ${gx}% ${gy}%, rgba(255,255,255,0.35), transparent 60%)`;
+        }
+      });
+    };
+
+    const onLeave = () => {
+      if (isTouch) return;
+      gsap.to(card, {
+        rotateX: 0,
+        rotateY: 0,
+        z: 0,
+        scale: 1,
+        duration: 0.5,
+        ease: "power3.out",
+      });
+      if (glare) glare.style.opacity = "0";
+    };
+
+    card.addEventListener("mouseenter", onEnter);
+    card.addEventListener("mousemove", onMove);
+    card.addEventListener("mouseleave", onLeave);
+
+    handlers.push(() => {
+      card.removeEventListener("mouseenter", onEnter);
+      card.removeEventListener("mousemove", onMove);
+      card.removeEventListener("mouseleave", onLeave);
+      gsap.killTweensOf(card);
+    });
+  });
+
+  // cleanup
+  return () => {
+    handlers.forEach((off) => off());
+  };
+}
+// page fade in/out effect
+export function fadeInUpAnimation(targets) {
+  gsap.utils.toArray(targets).forEach((el) => {
+    gsap.from(el, {
+      y: 50,
+      opacity: 0,
+      duration: 1,
+      ease: "power2.out",
+      scrollTrigger: {
+        trigger: el,
+        start: "top 85%", // element visible
+        scrub: true, // scroll up reset
+      },
+    });
+  });
+}
+// Parellex card animation
+export function initParallaxCard() {
+  const cards = document.querySelectorAll(".parallax-card");
+
+  cards.forEach((card) => {
+    const layers = card.querySelectorAll("[data-depth]");
+
+    card.addEventListener("mousemove", (e) => {
+      const rect = card.getBoundingClientRect();
+      const dx = (e.clientX - (rect.left + rect.width / 2)) / rect.width;
+      const dy = (e.clientY - (rect.top + rect.height / 2)) / rect.height;
+
+      layers.forEach((layer) => {
+        const depth = parseFloat(layer.dataset.depth || "10");
+        gsap.to(layer, {
+          x: dx * depth * 20,
+          y: dy * depth * 20,
+          duration: 0.4,
+        });
+      });
+    });
+
+    card.addEventListener("mouseleave", () => {
+      layers.forEach((layer) => gsap.to(layer, { x: 0, y: 0, duration: 0.5 }));
+    });
+  });
+}
+// Text headings animation
+export function textAnimation() {
+  // Store all heading elements + timeline + options
+  const items = [];
+
+  // -------------------- FUNCTION TO CREATE ANIMATION --------------------
+  function setupAnimation(el, options) {
+    let split = new SplitText(el, { types: "chars" });
+
+    // Create timeline paused initially
+    const tl = gsap.timeline({ paused: true });
+    tl.from(split.chars, options);
+
+    // Save in items array
+    items.push({
+      el,
+      split,
+      tl,
+      options,
+      played: false,
+    });
+
+    // Create ScrollTrigger for this element
+    ScrollTrigger.create({
+      trigger: el,
+      start: "top 80%",
+      once: true,
+      onEnter: () => {
+        tl.play();
+        const obj = items.find((x) => x.el === el);
+        obj.played = true;
+      },
+    });
+  }
+
+  document.fonts.ready.then(() => {
+    gsap.utils.toArray(".main-heading").forEach((el) => {
+      setupAnimation(el, {
+        opacity: 0,
+        y: "8vh",
+        rotationX: -95,
+        duration: 1,
+        stagger: 0.2,
+        ease: "power3.out",
+      });
+    });
+  });
+
+  // -------------------- SUB HEADINGS --------------------
+  document.fonts.ready.then(() => {
+    gsap.utils.toArray(".animate-para-head").forEach((el) =>
+      setupAnimation(el, {
+        opacity: 0,
+        y: 30,
+        rotationX: 90,
+        scale: 0.8,
+        duration: 0.4,
+        stagger: 0.05,
+        ease: "back.out(1.7)",
+      }),
+    );
+  });
+
+  // -------------------- RESIZE HANDLING --------------------
+  let resizeTimeout;
+
+  window.addEventListener("resize", () => {
+    clearTimeout(resizeTimeout);
+
+    resizeTimeout = setTimeout(() => {
+      document.fonts.ready.then(() => {
+        items.forEach((obj) => {
+          const oldProgress = obj.tl.progress();
+          const isPlaying = obj.tl.isActive();
+
+          obj.split.revert();
+          obj.split = new SplitText(obj.el, { types: "chars" });
+
+          obj.tl = gsap.timeline({ paused: !isPlaying });
+          obj.tl.from(obj.split.chars, obj.options);
+
+          obj.tl.progress(oldProgress);
+
+          if (obj.played && oldProgress === 1) obj.tl.progress(1);
+          if (isPlaying) obj.tl.play();
+
+          ScrollTrigger.create({
+            trigger: obj.el,
+            start: "top 80%",
+            once: true,
+            onEnter: () => {
+              obj.tl.play();
+              obj.played = true;
+            },
+          });
+        });
+
+        ScrollTrigger.refresh();
+      });
+    }, 150);
+  });
+}
+// All page content's and other animation
+export function animateElements1(
+  containerSelector = ".animate-box-wrapper",
+  boxSelector = ".animate-box",
+) {
+  // Store all triggers we create
+  let triggers = [];
+
+  // Main Heading Animation
+  gsap.utils.toArray(".main-heading1").forEach((el) => {
+    let split = new SplitText(el, { types: "chars" });
+
+    const t = gsap.from(split.chars, {
+      opacity: 0,
+      y: "8vh",
+      rotationX: -95,
+      duration: 1,
+      ease: "power3.out",
+      stagger: 0.2,
+      scrollTrigger: {
+        trigger: el,
+        start: "top 85%",
+        toggleActions: "play none none none",
+      },
+    });
+
+    // Refresh SplitText safely on resize (without rerunning animation)
+    const handleResize = () => {
+      // Only rebuild if width actually changed significantly
+      const currentWidth = window.innerWidth;
+      clearTimeout(el._resizeTimeout);
+      el._resizeTimeout = setTimeout(() => {
+        // Kill old split
+        split.revert();
+        // Rebuild new split with updated layout
+        split = new SplitText(el, { types: "chars" });
+      }, 300);
+    };
+
+    window.addEventListener("resize", handleResize);
+  });
+
+  // Paragraphs heading (SplitType)
+  gsap.utils.toArray(".animate-para-head2").forEach((el) => {
+    const split = new SplitText(el, { types: "chars" });
+
+    const t = gsap.from(split.chars, {
+      opacity: 0,
+      y: 30,
+      rotationX: 90,
+      scale: 0.8,
+      duration: 0.2,
+      stagger: 0.05,
+      ease: "back.out(1.7)",
+      scrollTrigger: {
+        trigger: el,
+        start: "top 80%",
+        toggleActions: "play none none none",
+      },
+    });
+
+    triggers.push(t.scrollTrigger);
+  });
+
+  // Rotate-in elements (continuous spin)
+  gsap.utils.toArray(".animate-rotatein").forEach((el) => {
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: el,
+        start: "top 85%",
+        toggleActions: "play none none none",
+      },
+    });
+
+    // initial rotate-in
+    tl.fromTo(
+      el,
+      { opacity: 0, rotation: 0, scale: 0.7 },
+      {
+        opacity: 1,
+        rotation: 0,
+        scale: 1,
+        duration: 3.8,
+        ease: "power2.out",
+      },
+    );
+  });
+
+  // Main Para
+    gsap.utils.toArray(".animate-main-para").forEach((el) => {
+      const t = gsap.from(el, {
+        opacity: 0,
+        filter: "blur(3px)",
+        y: 60,
+        duration: 1.8,
+        ease: "power2.inOut",
+        scrollTrigger: {
+          trigger: el,
+          start: "top 90%",
+          toggleActions: "play none none none", // one-time
+        },
+      });
+
+      triggers.push(t.scrollTrigger);
+    });
+
+  gsap.utils.toArray(".animate-para-head12").forEach((el) => {
+    gsap.fromTo(
+      el,
+      {
+        opacity: 0,
+        y: 60,
+        filter: "blur(3px)",
+      },
+      {
+        opacity: 1,
+        y: 0,
+        filter: "blur(0px)",
+        ease: "none",
+        scrollTrigger: {
+          trigger: el,
+          start: "top 80%",
+          end: "top 40%",
+          scrub: true,
+          markers: true,
+          invalidateOnRefresh: true,
+        },
+      },
+    );
+  });
+
+  // Paragraphs
+  gsap.utils.toArray(".animate-para").forEach((el) => {
+    gsap.from(el, {
+      opacity: 0,
+      y: 90,
+      duration: 2.2,
+      ease: "power4.out",
+      stagger: 0.4,
+      scrollTrigger: {
+        trigger: el,
+        start: "top bottom+=5%",
+        once: true,
+      },
+    });
+  });
+
+  async function animateSubParaHeadings() {
+    // Wait for fonts & next paint
+    await document.fonts.ready;
+    await new Promise((r) => requestAnimationFrame(r));
+
+    const items = [];
+
+    function setup(el) {
+      if (el._split) el._split.revert();
+
+      const split = new SplitText(el, { types: "chars" });
+      el._split = split;
+      const chars = split.chars;
+
+      // Generate random offsets per char
+      const offsets = chars.map(() => ({
+        x: gsap.utils.random([-30, 30]),
+        y: gsap.utils.random([-50, 50]),
+        rotation: gsap.utils.random([-45, 45]),
+        scale: gsap.utils.random(0.7, 1.1),
+        duration: gsap.utils.random(0.3, 0.6),
+      }));
+
+      // Track if this element has played
+      let played = false;
+
+      // Animate each char independently
+      const triggers = chars.map((char, i) =>
+        gsap.from(char, {
+          opacity: 0,
+          x: offsets[i].x,
+          y: offsets[i].y,
+          rotation: offsets[i].rotation,
+          scale: offsets[i].scale,
+          duration: offsets[i].duration,
+          ease: "back.out(1.5)",
+          scrollTrigger: {
+            trigger: el,
+            start: "top 80%",
+            toggleActions: "play none none none",
+            onEnter: () => {
+              played = true;
+            },
+          },
+          delay: i * 0.05,
+        }),
+      );
+
+      items.push({ el, offsets, played, triggers });
+    }
+
+    // Initial setup
+    gsap.utils.toArray(".animate-subpara-head").forEach(setup);
+
+    // Resize handler
+    let resizeTimeout;
+    window.addEventListener("resize", () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(async () => {
+        await document.fonts.ready;
+        await new Promise((r) => requestAnimationFrame(r));
+
+        items.forEach((item) => {
+          const el = item.el;
+
+          // Kill old ScrollTriggers for this element
+          ScrollTrigger.getAll().forEach((st) => {
+            if (st.trigger === el) st.kill();
+          });
+
+          // Revert old SplitText
+          if (el._split) el._split.revert();
+
+          // Recreate SplitText
+          const split = new SplitText(el, { types: "chars" });
+          el._split = split;
+          const chars = split.chars;
+
+          // Only reapply offsets if animation - has not yet played
+          if (!item.played) {
+            chars.forEach((char, i) => {
+              gsap.from(char, {
+                opacity: 0,
+                x: item.offsets[i].x,
+                y: item.offsets[i].y,
+                rotation: item.offsets[i].rotation,
+                scale: item.offsets[i].scale,
+                duration: item.offsets[i].duration,
+                ease: "back.out(1.5)",
+                scrollTrigger: {
+                  trigger: el,
+                  start: "top 80%",
+                  toggleActions: "play none none none",
+                  onEnter: () => {
+                    item.played = true;
+                  },
+                },
+                delay: i * 0.05,
+              });
+            });
+          }
+        });
+
+        ScrollTrigger.refresh();
+      }, 200);
+    });
+  }
+
+  animateSubParaHeadings();
+
+  // Images (random mixed animations)
+  gsap.utils.toArray(".animate-image").forEach((el) => {
+    // pick a random animation type
+    const animType = gsap.utils.random([
+      { opacity: 0, y: 80, scale: 0.9 },
+      { opacity: 0, y: -80, x: 40, scale: 1.1 },
+      { opacity: 0, x: -60, scale: 0.95 },
+    ]);
+
+    // Entry animation
+    gsap.from(el, {
+      ...animType,
+      duration: gsap.utils.random(0.6, 1),
+      ease: "back.out(2)",
+      scrollTrigger: {
+        trigger: el,
+        start: "top 80%",
+        toggleActions: "play none none none",
+        onEnter: () => {
+          // Check if infinite tween already exists
+          if (!el.dataset.breathe) {
+            el.dataset.breathe = true; // mark as animated
+
+            gsap.to(el, {
+              scale: 1.02,
+              duration: 2,
+              ease: "sine.inOut",
+              repeat: -1,
+              yoyo: true,
+            });
+          }
+        },
+      },
+    });
+  });
+
+  // Stand elements (infinite drop-shadow pulse) for bitcoin
+  gsap.utils.toArray(".stand").forEach((el) => {
+    gsap.to(el, {
+      scrollTrigger: {
+        trigger: el,
+        start: "top 85%",
+        toggleActions: "play none none none",
+      },
+      filter: "drop-shadow(0 10px 20px rgba(255,255,255,1))",
+      duration: 2,
+      ease: "sine.inOut",
+      yoyo: true,
+      repeat: -1,
+    });
+  });
+
+  // Cards
+  gsap.utils.toArray(".animate-card").forEach((el) => {
+    const t = gsap.from(el, {
+      y: 50,
+      opacity: 0,
+      duration: 1,
+      stagger: 0.2,
+      scrollTrigger: {
+        trigger: el,
+        start: "top 90%",
+        toggleActions: "play none none none",
+      },
+    });
+    triggers.push(t.scrollTrigger);
+  });
+
+  // Floating-card
+  gsap.utils.toArray(".floating-card").forEach((card) => {
+    gsap.to(card, {
+      y: 12,
+      duration: 3,
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut",
+    });
+  });
+
+  // Headings
+  gsap.utils.toArray(".animate-heading").forEach((el) => {
+    const t = gsap.from(el, {
+      y: 40,
+      opacity: 0,
+      duration: 1,
+      ease: "power3.out",
+      scrollTrigger: {
+        trigger: el,
+        start: "top 90%",
+        toggleActions: "play none none none",
+      },
+    });
+    triggers.push(t.scrollTrigger);
+  });
+
+  // Links / Lists
+  gsap.utils.toArray(".animate-list li, .animate-link").forEach((el, i) => {
+    const t = gsap.from(el, {
+      x: -30,
+      opacity: 0,
+      duration: 0.6,
+      delay: 0.5,
+      ease: "power2.out",
+      scrollTrigger: {
+        trigger: el,
+        start: "top 95%",
+        toggleActions: "play none none none",
+      },
+    });
+
+    triggers.push(t.scrollTrigger);
+  });
+
+  // Left buttons
+  gsap.utils.toArray(".animate-left-button").forEach((el) => {
+    gsap.from(el, {
+      x: -120,
+      opacity: 0,
+      scale: 0.8,
+      rotation: -8,
+      duration: 1.8,
+      ease: "elastic.out(1, 0.7)",
+      stagger: 0.4,
+      scrollTrigger: {
+        trigger: el,
+        start: "top bottom+=5%",
+        toggleActions: "play none none none",
+      },
+    });
+  });
+
+  // Right buttons
+  gsap.utils.toArray(".animate-right-button").forEach((el) => {
+    gsap.from(el, {
+      x: 120,
+      opacity: 0,
+      scale: 0.8,
+      rotation: 8,
+      duration: 1.8,
+      ease: "elastic.out(1, 0.7)",
+      stagger: 0.4,
+      scrollTrigger: {
+        trigger: el,
+        start: "top bottom+=5%",
+        toggleActions: "play none none none",
+      },
+    });
+  });
+
+  // calculator number animation
+  gsap.utils.toArray(".animate-number").forEach((el) => {
+    const raw = el.getAttribute("data-value") || el.dataset.value || "";
+    const match = raw.match(/-?[\d,]+(?:\.\d+)?/); // grab numeric part (allows commas and decimals)
+    if (!match) return; // nothing numeric found
+
+    const numStr = match[0].replace(/,/g, ""); // remove commas if present
+    const finalValue = parseFloat(numStr);
+    if (Number.isNaN(finalValue)) return;
+
+    // detect decimals count from the original numeric string
+    const decimals = (numStr.split(".")[1] || "").length;
+
+    // capture prefix & suffix (anything before/after the numeric part)
+    const startIndex = raw.indexOf(match[0]);
+    const prefix = raw.slice(0, startIndex);
+    const suffix = raw.slice(startIndex + match[0].length);
+
+    // duration can be set per-element via data-duration (optional)
+    const duration = parseFloat(el.getAttribute("data-duration")) || 2;
+
+    // formatter: handle percentages (no commas), decimals, integers (with commas)
+    const formatValue = (val) => {
+      if (suffix.includes("%") || prefix.includes("%")) {
+        // keep decimals if present in original; don't add commas for % values
+        return decimals
+          ? Number(val).toFixed(decimals) + suffix
+          : Math.floor(val) + suffix;
+      }
+      if (decimals) {
+        // keep fixed decimals (e.g. 2.52)
+        return Number(val).toFixed(decimals) + suffix;
+      }
+      // integer: format with locale commas
+      return Math.floor(val).toLocaleString() + suffix;
+    };
+
+    // initial text (optional)
+    el.textContent = formatValue(0);
+
+    // build timeline: small pop + count-up (scroll-triggered)
+    const t = gsap.timeline({
+      scrollTrigger: {
+        trigger: el,
+        start: "top 80%",
+        once: true,
+      },
+    });
+
+    t.fromTo(
+      el,
+      { opacity: 0, scale: 0.9 },
+      { opacity: 1, scale: 1, duration: 0.45, ease: "back.out(1.7)" },
+    );
+
+    const obj = { val: 0 };
+    t.to(obj, {
+      val: finalValue,
+      duration,
+      ease: "power2.out",
+      onUpdate: () => {
+        el.textContent = formatValue(obj.val);
+      },
+      onComplete: () => {
+        // ensure exact final display (avoid rounding artifacts)
+        el.textContent = formatValue(finalValue);
+      },
+    });
+    triggers.push(t.scrollTrigger);
+  });
+
+  // content banner
+  gsap.utils.toArray(".animate-content-banner").forEach((el) => {
+    const t = gsap.from(el, {
+      y: 200,
+      opacity: 0,
+      duration: 0.5,
+      ease: "blast.out",
+      scrollTrigger: {
+        trigger: el,
+        start: "top 90%",
+        toggleActions: "play none none none",
+      },
+    });
+    triggers.push(t.scrollTrigger);
+  });
+
+  // banner-buttons animation
+  gsap.utils.toArray(".animate-banner-buttons").forEach((el, i) => {
+    const t = gsap.from(el, {
+      y: 50,
+      opacity: 0,
+      duration: 2.5,
+      ease: "power2.out",
+      delay: i * 0.2, // optional small stagger
+      scrollTrigger: {
+        trigger: el,
+        start: "top 97%",
+        toggleActions: "play none none none",
+      },
+    });
+    triggers.push(t.scrollTrigger);
+  });
+
+  // normal-buttons animation
+  gsap.utils.toArray(".animate-normal-buttons").forEach((el) => {
+    const t = gsap.from(el, {
+      y: -100,
+      opacity: 0,
+      duration: 1.8,
+      stagger: 0.6,
+      ease: "power2.out",
+      scrollTrigger: {
+        trigger: el,
+        start: "top 95%",
+        toggleActions: "play none none none",
+      },
+    });
+    triggers.push(t.scrollTrigger);
+  });
+
+  // table banner
+  gsap.utils.toArray(".animate-table-banner").forEach((el) => {
+    const t = gsap.from(el, {
+      y: -50,
+      opacity: 0,
+      duration: 0.7,
+      ease: "power2.out",
+      scrollTrigger: {
+        trigger: el,
+        start: "top 95%",
+        toggleActions: "play none none none",
+      },
+    });
+    triggers.push(t.scrollTrigger);
+  });
+
+  // table animation
+  gsap.utils.toArray(".animate-table").forEach((table) => {
+    gsap.from(table, {
+      y: 150,
+      opacity: 0,
+      duration: 1.5,
+      ease: "power2.out",
+      scrollTrigger: {
+        trigger: table,
+        start: "top 97%",
+      },
+    });
+  });
+
+  // Box animations
+  const boxes = gsap.utils.toArray(boxSelector);
+  if (!boxes.length) return;
+
+  const tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: containerSelector,
+      start: "top 70%",
+      end: "bottom top",
+      toggleActions: "play none none none",
+    },
+  });
+
+  boxes.forEach((el, i) => {
+    tl.from(
+      el,
+      {
+        scale: 0.8,
+        opacity: 0,
+        duration: 1.8,
+        ease: "back.out(1.7)",
+      },
+      i * 0.2,
+    ); // stagger each box
+  });
+
+  // store scrollTrigger for cleanup
+  triggers.push(tl.scrollTrigger);
+
+  window.addEventListener("resize", () => {
+    ScrollTrigger.refresh(); // recalc positions
+  });
+
+  return () => {
+    triggers.forEach((t) => t?.kill());
+  };
+}

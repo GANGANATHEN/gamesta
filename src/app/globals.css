@@ -20,6 +20,10 @@
   }
 }
 
+html {
+  scroll-behavior: auto !important; /* Browser-oda jump animation stop */
+}
+
 html.lenis,
 html.lenis body {
   height: auto;
@@ -98,3 +102,11 @@ body {
 .animate-marquee {
   animation: marquee 8s linear infinite;
 }
+
+/* for animation */
+/* .animate-heading,
+.animate-para,
+.animate-grid-item,
+.animate-img {
+  opacity: 0;
+} */

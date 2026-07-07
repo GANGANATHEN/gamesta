@@ -5,7 +5,7 @@ import React from "react";
 
 const FutureApplication = () => {
   return (
-    <div className="padding text-black py-5">
+    <div className="padding text-black py-5 overflow-hidden">
      <div className="relative mt-4 h-dvh w-full overflow-hidden">
   {/* Header & Link - Idhaiyum absolute position panna mudiyum */}
   <div className="absolute top-[5%] left-[25%] z-10 flex flex-col items-end">

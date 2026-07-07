@@ -6,6 +6,7 @@ import { MotionPathPlugin } from "gsap/MotionPathPlugin";
 
 gsap.registerPlugin(ScrollTrigger, Draggable, MotionPathPlugin);
 
+// navbar animations (not completed ----> works pending)
 export const animateMenuOpen = () => {
   const tl = gsap.timeline();
   tl.fromTo(
@@ -79,11 +80,32 @@ export const getRevolverTimeline = (index, totalLinks, onComplete) => {
   return tl;
 };
 
+// homepage animations
 export const initHomepageAnimation = (containerRef) => {
-  const logo = document.querySelector(".hero-logo");
-  const navSpot = document.querySelector(".nav-logo-spot");
+  // console.log("Home Start");
 
-  // 1. Calculate and lock the initial positions BEFORE animation starts
+  const container = containerRef.current;
+  const logo = container.querySelector(".hero-logo");
+  const navSpot = container.querySelector(".nav-logo-spot");
+  const navbar = container.querySelector(".nav-bar");
+  const bg = container.querySelector(".bg-image");
+  const laptop = container.querySelector(".laptop");
+  const contents = container.querySelectorAll(".content");
+
+  // Initial states
+  gsap.set(container.querySelector(".laptop"), {
+    x: 400,
+    y: 400,
+    opacity: 0,
+  });
+
+  gsap.set(container.querySelectorAll(".content"), {
+    x: -400,
+    y: 400,
+    opacity: 0,
+  });
+
+  // Calculate and lock the initial positions BEFORE animation starts
   const getInitialOffsets = () => {
     const l = logo.getBoundingClientRect();
     const s = navSpot.getBoundingClientRect();
@@ -93,105 +115,128 @@ export const initHomepageAnimation = (containerRef) => {
     };
   };
 
-  const targetOffset = getInitialOffsets();
+  let targetOffset = getInitialOffsets();
 
   const tl = gsap.timeline({
     scrollTrigger: {
-      trigger: containerRef.current,
+      trigger: container,
+      start: "top center",
+      end: "bottom bottm",
       start: "top top",
       end: "+=1000",
-      scrub: 1,
       pin: true,
+      scrub: 1,
       invalidateOnRefresh: true,
+      onRefresh: () => {
+        targetOffset = getInitialOffsets();
+      },
     },
   });
 
-  // Nav bar animation
-  tl.fromTo(".nav-bar", { y: -100, opacity: 0 }, { y: 0, opacity: 1 }, 0);
+  // Navbar
+  tl.fromTo(
+    navbar,
+    {
+      y: -100,
+      opacity: 0,
+    },
+    {
+      y: 0,
+      opacity: 1,
+    },
+    0,
+  );
 
-  // Logo animation (Fixed target)
+  // Logo
   tl.to(
-    ".hero-logo",
+    logo,
     {
       x: targetOffset.x,
       y: targetOffset.y,
+
       scale: () => {
         const l = logo.getBoundingClientRect();
         const s = navSpot.getBoundingClientRect();
 
-        const scaleX = s.width / l.width;
-        const scaleY = s.height / l.height;
-
-        return Math.min(scaleX, scaleY);
+        return Math.min(s.width / l.width, s.height / l.height);
       },
-      duration: 1.6,
+
       transformOrigin: "top left",
       ease: "power1.inOut",
     },
     0,
   );
 
+  // Background
   tl.to(
-    ".bg-image",
+    bg,
     {
       scale: 1,
-      duration: 1.2,
+      ease: "none",
     },
     0,
   );
 
-  gsap.set(".laptop", { x: 400, y: 400, opacity: 0 });
-  gsap.set(".content", { x: -400, y: 400, opacity: 0 });
-
+  // Laptop
   tl.to(
-    ".laptop",
+    laptop,
     {
       x: 0,
       y: 0,
       opacity: 1,
       ease: "power1.inOut",
-      duration: 1.4,
     },
     0,
   );
 
+  // Content
   tl.to(
-    ".content",
+    contents,
     {
       x: 0,
       y: 0,
       opacity: 1,
       ease: "power1.inOut",
-      duration: 1.4,
+      stagger: 0.08,
     },
     0,
   );
 
-  const images = Array.from({ length: 9 }, (_, i) => i + 1);
+  // Floating Images
+  for (let i = 1; i <= 9; i++) {
+    const img = container.querySelector(`.img-${i}`);
+    const anchor = container.querySelector(`.anchor-${i}`);
 
-  images.forEach((id) => {
-    const img = document.querySelector(`.img-${id}`);
-    const anchor = document.querySelector(`.anchor-${id}`);
+    const getOffset = () => {
+      const imgRect = img.getBoundingClientRect();
+      const anchorRect = anchor.getBoundingClientRect();
 
-    if (!img || !anchor) return;
+      return {
+        x: anchorRect.left - imgRect.left,
+        y: anchorRect.top - imgRect.top,
+      };
+    };
 
-    const imgRect = img.getBoundingClientRect();
-    const anchorRect = anchor.getBoundingClientRect();
+    if (!img || !anchor) continue;
 
     tl.to(
       img,
       {
-        x: anchorRect.left - imgRect.left,
-        y: anchorRect.top - imgRect.top,
+        x: () => getOffset().x,
+        y: () => getOffset().y,
         rotate: 0,
-        duration: 1.4,
         ease: "power1.inOut",
       },
       0,
     );
-  });
+  }
 
-  return tl;
+  // console.log("Home End", ScrollTrigger.getAll().length);
+
+  return () => {
+    tl.kill();
+    tl.scrollTrigger?.kill();
+  };
 };
 
 export const animateCountdown = (containerRef) => {

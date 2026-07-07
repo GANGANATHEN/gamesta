@@ -4,7 +4,7 @@ import React from "react";
 
 const PlayToEarn = () => {
   return (
-    <div className="padding text-black">
+    <div className="padding text-black overflow-hidden">
       <div>
         <p>{play2earn.heading}</p>
         <p>{play2earn.subhead}</p>

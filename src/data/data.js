@@ -102,7 +102,7 @@ export const homecontent = {
 };
 
 export const gamestadapp = {
-  heading: `Gamesta  dApp`,
+  heading: `GAMESTA  DAPP`,
   para: `is a BigData, AI powered resource across the entire spectrum of the GameFi and P2E landscape, providing data driven and informed decisions.`,
   dapp: [
     {

@@ -1,31 +1,98 @@
+"use client";
+import React, { useRef, useEffect } from "react";
 import { gamestadapp } from "@/data/data";
 import Image from "next/image";
-import React from "react";
+import { initRevealAnimations } from "@/lib/animations/reveal";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const Dapp = () => {
+  const pageRef = useRef(null);
+
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     ScrollTrigger.refresh();
+  //   }, 1000);
+  // }, []);
+
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //   console.log(pageRef.current);
+  //   if (pageRef.current) {
+  //     const cleanup = initRevealAnimations(pageRef);
+  //     return cleanup;
+  //   }
+  //   }, 4000);
+  // }, []);
+
+  // useEffect(() => {
+  //   console.log("All Triggers");
+  //   console.table(
+  //     ScrollTrigger.getAll().map((t, i) => ({
+  //       index: i,
+  //       trigger: t.trigger?.className,
+  //       start: t.start,
+  //       end: t.end,
+  //       pin: !!t.pin,
+  //     })),
+  //   );
+  // }, []);
+  console.log("Dapp render");
+  
+  useEffect(() => {
+    if (!pageRef.current) return;
+
+    const cleanup = initRevealAnimations(pageRef);
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        ScrollTrigger.refresh();
+      });
+    });
+
+    return cleanup;
+  }, []);
+
   return (
-    <div className="padding text-black bg-[#EBF9FF] flex flex-col justify-center items-center">
-      <div className="relative w-[40%] space-y-3">
-        <div className="font-moda text-[100px] font-black">{gamestadapp.heading}</div>
-        <p className="font-semibold text-2xl">{gamestadapp.para}</p>
-        <div className="font-sans text-white flex flex-col items-end absolute top-15 right-0 -rotate-15">
-          <p className="w-fit bg-[#00B3E8] px-2 py-1">Launching in </p>
-          <p className="w-fit bg-[#00B3E8] px-2 py-1 absolute top-6 -right-5">Q4 2026</p>
+    <div
+      ref={pageRef}
+      className="padding text-black bg-[#EBF9FF] flex flex-col justify-center items-center overflow-hidden pb-20 sm:pb-43  [clip-path:polygon(0%_0%,100%_0%,100%_92%,0%_100%)] sm:[clip-path:polygon(0%_0%,100%_0%,100%_85%,0%_100%)] lg:[clip-path:polygon(0%_0%,100%_0%,100%_83%,0%_100%)]"
+    >
+      <div className="w-full sm:w-[60%] xl:w-[40%] space-y-3">
+        <div className="w-full mt-4 flex flex-col justify-center gap-y-3">
+          <div className="relative w-fit font-moda text-3xl md:text-5xl lg:text-7xl 2xl:text-[100px] font-black">
+            <h1 className="animate-heading">{gamestadapp.heading}</h1>
+            <div className="font-sans font-normal text-white text-sm lg:text-lg flex flex-col items-end absolute -rotate-15 right-[-50%] top-[18%] xl:top-[20%] xl:right-[-35%]">
+              <p className="w-fit bg-[#00B3E8] px-2 py-1">Launching in </p>
+              <p className="w-fit bg-[#00B3E8] px-2 py-1 absolute top-6 -right-5">
+                Q4 2026
+              </p>
+            </div>
+          </div>
+          <p className="animate-para font-semibold text-base sm:text-lg xl:text-2xl">
+            {gamestadapp.para}
+          </p>
         </div>
       </div>
-      <div className="grid grid-cols-2 gap-10 py-10">
+      <div className="animate-grid grid grid-cols-1 md:grid-cols-2 gap-10 py-10">
         {gamestadapp.dapp.map((value) => (
           <div key={value.id} className="flex">
-            <div className="w-[10%]">
+            <div className="w-[20%] xl:w-[10%]">
               <Image
                 src={value.icon}
                 className="w-12 h-12 object-contain bg-white p-3.5 rounded-lg shadow-2xl"
                 alt={value.head}
               />
             </div>
-            <div className="w-[90%]">
-              <p className="text-[#00B3E8] text-3xl font-bold">{value.head}</p>
-              <p className="max-w-xl">{value.desc}</p>
+            <div className="w-[80%] xl:w-[90%]">
+              <p className="text-[#00B3E8] text-xl lg:text-2xl xl:text-3xl font-bold">
+                {value.head}
+              </p>
+              <p className="max-w-xl text-sm lg:text-base xl:text-lg">
+                {value.desc}
+              </p>
             </div>
           </div>
         ))}

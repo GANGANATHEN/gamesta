@@ -3,7 +3,7 @@ import { navLinks } from "@/data/data";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import RevolverMenu from "./revolverMenu";
-import { initHomepageAnimation } from "@/lib/gsapanimation";
+import { initHomepageAnimation } from "@/lib/animations/gsapanimation";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -16,7 +16,7 @@ const Navbar = () => {
   }, []);
   return (
     <div>
-      <nav className="nav-bar opacity-0 padding w-full fixed z-50 top-0 left-0 flex justify-between items-center p-3 gap-3 2xl:gap-x-25">
+      <nav className="nav-bar hidden opacity-0 padding w-full fixed z-50 top-0 left-0 justify-between items-center p-3 gap-3 2xl:gap-x-25">
         {/* Logo Spot - Same place for animation */}
         <div className="w-[40%] xl:w-[20%] h-12.5">
           <div className="nav-logo-spot w-full h-full mt-4 sm:mt-2"></div>
