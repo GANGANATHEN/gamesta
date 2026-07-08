@@ -1,4 +1,4 @@
-import { futureapplications } from "@/data/data";
+import { futureApplications } from "@/data/data";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -9,16 +9,16 @@ const FutureApplication = () => {
      <div className="relative mt-4 h-dvh w-full overflow-hidden">
   {/* Header & Link - Idhaiyum absolute position panna mudiyum */}
   <div className="absolute top-[5%] left-[25%] z-10 flex flex-col items-end">
-    <p className="font-moda leading-snug text-[80px] max-w-sm text-right">{futureapplications.heading}</p>
+    <p className="font-moda leading-snug text-[80px] max-w-sm text-right">{futureApplications.heading}</p>
     <Link
-      href={futureapplications.link.href}
+      href={futureApplications.link.href}
       className="text-white bg-linear-to-r from-[#06C5C1] to-[#009FEA] p-2 rounded-md inline-block mt-4"
     >
-      {futureapplications.link.text}
+      {futureApplications.link.text}
     </Link>
   </div>
 
-  {futureapplications.icons.map((value, index) => {
+  {futureApplications.icons.map((value, index) => {
     const positions = [
       { top: "20%", left: "60%" },
       { top: "20%", left: "50%" },

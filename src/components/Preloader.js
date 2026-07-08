@@ -1,8 +1,10 @@
 "use client";
 import { useEffect } from "react";
 import gsap from "gsap";
+import Image from "next/image";
 
 export default function Preloader() {
+
   useEffect(() => {
     const tl = gsap.timeline();
 
@@ -40,9 +42,12 @@ export default function Preloader() {
   return (
     <div
       id="preloader"
-      className="fixed inset-0 z-99 flex items-center justify-center bg-black"
+      className="fixed inset-0 z-99 flex flex-col items-center justify-center bg-black"
       style={{ clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)" }}
     >
+      <div className="w-80 h-80 relative">
+        <Image src="/g.png" alt="logo" fill className="object-contain" />
+      </div>
       <h1
         id="logo"
         className="text-white text-6xl md:text-9xl font-bold tracking-widest font-oswald italic"

@@ -67,6 +67,24 @@ body {
 
   /* Backgrounds */
   --background-image-hero-pattern: url("/assets/bg/homebg.svg");
+
+  /* marquee infinity scroll */
+  --animate-marquee: marquee 20s linear infinite;
+
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+}
+
+@utility text-stroke-accent {
+  -webkit-text-stroke: 2px #00B3E8;
 }
 
 .padding {

@@ -42,6 +42,8 @@ import image5 from "./p2e/image5.svg";
 import image6 from "./p2e/image7.svg";
 import image7 from "./p2e/image2.svg";
 import image8 from "./p2e/image8.svg";
+// treasury
+import infinity from "./treasury/infinity.svg";
 //gamestateam
 import alex from "./gamestateam/alex.png";
 import sam from "./gamestateam/sam.png";
@@ -74,6 +76,7 @@ import Rectanglebg from "./gamexcard/Rectanglebg.svg";
 import Rectangleblackbg from "./gamexcard/Rectangleblackbg.svg";
 
 export {
+  infinity,
   c1,
   c2,
   c3,

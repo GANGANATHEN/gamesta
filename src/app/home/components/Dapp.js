@@ -11,54 +11,19 @@ gsap.registerPlugin(ScrollTrigger);
 const Dapp = () => {
   const pageRef = useRef(null);
 
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     ScrollTrigger.refresh();
-  //   }, 1000);
-  // }, []);
 
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //   console.log(pageRef.current);
-  //   if (pageRef.current) {
-  //     const cleanup = initRevealAnimations(pageRef);
-  //     return cleanup;
-  //   }
-  //   }, 4000);
-  // }, []);
-
-  // useEffect(() => {
-  //   console.log("All Triggers");
-  //   console.table(
-  //     ScrollTrigger.getAll().map((t, i) => ({
-  //       index: i,
-  //       trigger: t.trigger?.className,
-  //       start: t.start,
-  //       end: t.end,
-  //       pin: !!t.pin,
-  //     })),
-  //   );
-  // }, []);
-  console.log("Dapp render");
-  
   useEffect(() => {
     if (!pageRef.current) return;
-
-    const cleanup = initRevealAnimations(pageRef);
-
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        ScrollTrigger.refresh();
-      });
-    });
-
-    return cleanup;
+    setTimeout(() => {
+      const cleanup = initRevealAnimations(pageRef);
+      return cleanup;
+    }, 2000);
   }, []);
 
   return (
     <div
       ref={pageRef}
-      className="padding text-black bg-[#EBF9FF] flex flex-col justify-center items-center overflow-hidden pb-20 sm:pb-43  [clip-path:polygon(0%_0%,100%_0%,100%_92%,0%_100%)] sm:[clip-path:polygon(0%_0%,100%_0%,100%_85%,0%_100%)] lg:[clip-path:polygon(0%_0%,100%_0%,100%_83%,0%_100%)]"
+      className="padding text-[#273A41] bg-[#EBF9FF] flex flex-col justify-center items-center overflow-hidden pb-20 sm:pb-43  [clip-path:polygon(0%_0%,100%_0%,100%_92%,0%_100%)] sm:[clip-path:polygon(0%_0%,100%_0%,100%_85%,0%_100%)] lg:[clip-path:polygon(0%_0%,100%_0%,100%_83%,0%_100%)]"
     >
       <div className="w-full sm:w-[60%] xl:w-[40%] space-y-3">
         <div className="w-full mt-4 flex flex-col justify-center gap-y-3">

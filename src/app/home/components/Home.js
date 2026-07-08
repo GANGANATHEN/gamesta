@@ -14,12 +14,9 @@ gsap.registerPlugin(ScrollTrigger);
 const Homepage = () => {
   const container = useRef(null);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
 
   // call animation
   useEffect(() => {
-    if (!mounted) return;
-
     let cleanup = () => {};
 
     const timer = setTimeout(() => {
@@ -30,29 +27,6 @@ const Homepage = () => {
       clearTimeout(timer);
       cleanup();
     };
-  }, [mounted]);
-
-  // useEffect(() => {
-  //   const images = document.images;
-
-  //   Promise.all(
-  //     [...images].map((img) => {
-  //       if (img.complete) return Promise.resolve();
-
-  //       return new Promise((resolve) => {
-  //         img.onload = resolve;
-  //         img.onerror = resolve;
-  //       });
-  //     }),
-  //   ).then(() => {
-  //     ScrollTrigger.refresh();
-  //   });
-  // }, []);
-
-  useEffect(() => {
-    setTimeout(() => {
-      setMounted(true);
-    }, 500);
   }, []);
 
   const anchors = [
@@ -101,12 +75,6 @@ const Homepage = () => {
      lg:right-13 xl:right-15
      min-[1800px]:bottom-[48%]! min-[1800px]:right-[9%]!`,
   ];
-
-  console.log("Home render");
-
-  if (!mounted) {
-    return null; // Render nothing on the server side
-  }
 
   return (
     <div
