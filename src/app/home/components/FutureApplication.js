@@ -1,59 +1,76 @@
-import { futureApplications } from "@/data/data";
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
 
-const FutureApplication = () => {
+import { CARD_POSITIONS } from "@/data/positions";
+import { futureApplications } from "@/data/data";
+
+export default function FutureApplication() {
+  const positions = CARD_POSITIONS.desktop;
+
   return (
-    <div className="padding text-black py-5 overflow-hidden">
-     <div className="relative mt-4 h-dvh w-full overflow-hidden">
-  {/* Header & Link - Idhaiyum absolute position panna mudiyum */}
-  <div className="absolute top-[5%] left-[25%] z-10 flex flex-col items-end">
-    <p className="font-moda leading-snug text-[80px] max-w-sm text-right">{futureApplications.heading}</p>
-    <Link
-      href={futureApplications.link.href}
-      className="text-white bg-linear-to-r from-[#06C5C1] to-[#009FEA] p-2 rounded-md inline-block mt-4"
-    >
-      {futureApplications.link.text}
-    </Link>
-  </div>
+    <section className="padding text-[#273A41] py-5 overflow-hidden">
+      <div className="relative min-h-screen w-full">
+        {/* Heading */}
 
-  {futureApplications.icons.map((value, index) => {
-    const positions = [
-      { top: "20%", left: "60%" },
-      { top: "20%", left: "50%" },
-      { top: "35%", left: "75%" },
-      { top: "50%", left: "15%" },
-      { top: "65%", left: "45%" },
-      { top: "25%", left: "20%" },
-      { top: "70%", left: "70%" },
-    ];
+        <div className="absolute top-[5%] 2xl:left-[25%] z-50 flex flex-col items-center md:items-end">
+          <h2 className="w-fit font-moda font-bold text-3xl 2xl:text-8xl leading-none text-right max-w-xl">
+            {futureApplications.heading}
+          </h2>
 
-    return (
-      <div
-        key={value.id}
-        className="absolute flex flex-col justify-center items-center px-6 py-8 shadow-2xl rounded-4xl"
-        style={{
-          backgroundColor: value.color,
-          top: positions[index % positions.length].top,
-          left: positions[index % positions.length].left,
-          transform: "translate(-50%, -50%)", // Perfect center alignment
-        }}
-      >
-        <Image
-          src={value.icon}
-          alt={value.text}
-          className="w-12 h-12 object-contain"
-        />
-        <p className="text-lg font-semibold mt-2 text-center max-w-[140px] break-words leading-tight">
-          {value.text}
-        </p>
+          <Link
+            href={futureApplications.link.href}
+            className="w-fit mt-6 bg-linear-to-r from-[#06C5C1] to-[#009FEA] px-5 py-3 text-white rounded-lg text-sm 2xl:text-lg"
+          >
+            {futureApplications.link.text}
+          </Link>
+        </div>
+        {futureApplications.icons.map((card, index) => {
+          const position = positions[index % positions.length];
+
+          return (
+            <div
+              key={card.id}
+              className={`
+              mt-10
+                md:absolute
+                ${position.width}
+                ${position.height}
+                ${position.zIndex}
+                md:-translate-x-1/2
+                md:-translate-y-1/2
+                flex
+                flex-col
+                justify-end
+                rounded-[40px]
+                px-6
+                py-8
+              `}
+              style={{
+                top: position.top,
+                bottom: position.bottom,
+                left: position.left,
+                right: position.right,
+                backgroundColor: card.color,
+                boxShadow: `-2px 14px 7px -5px ${card.color}`,
+              }}
+            >
+              <Image
+                src={card.icon}
+                alt={card.text}
+                width={56}
+                height={56}
+                className="object-contain"
+              />
+
+              <p className="mt-4 text-lg font-bold leading-tight">
+                {card.text}
+              </p>
+            </div>
+          );
+        })}
       </div>
-    );
-  })}
-</div>
-    </div>
+    </section>
   );
-};
-
-export default FutureApplication;
+}

@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import Dapp from "./components/Dapp";
 import FutureApplication from "./components/FutureApplication";
 import { HomePage, PlayToEarn } from "@/lib/dynamic/dynamic";
+import Treasury from "./components/Treasury";
 
 const Page = () => {
   // useEffect(() => {
@@ -10,11 +11,12 @@ const Page = () => {
   // }, []);
 
   return (
-    <div className="bg-white">
+    <div className="bg-white overflow-hidden">
       <HomePage />
       <Dapp />
-      <FutureApplication />
+      {/* <FutureApplication /> */}
       <PlayToEarn />
+      <Treasury />
     </div>
   );
 };
