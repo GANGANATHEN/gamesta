@@ -4,6 +4,8 @@ import Dapp from "./components/Dapp";
 import FutureApplication from "./components/FutureApplication";
 import { HomePage, PlayToEarn } from "@/lib/dynamic/dynamic";
 import Treasury from "./components/Treasury";
+import Partandinvest from "./components/Partandinvest";
+import Gamestateam from "./components/Gamestateam";
 
 const Page = () => {
   // useEffect(() => {
@@ -14,9 +16,11 @@ const Page = () => {
     <div className="bg-white overflow-hidden">
       <HomePage />
       <Dapp />
-      {/* <FutureApplication /> */}
+      <FutureApplication />
       <PlayToEarn />
       <Treasury />
+      <Gamestateam />
+      <Partandinvest />
     </div>
   );
 };

@@ -141,15 +141,15 @@ export const futureApplications = {
   },
   icons: [
     { id: 0, icon: earn2buy, text: `EARN2BUY`, color: `#EBF9FF` },
-    { id: 1, icon: g_console, text: `G-PAD`, color: `#F5F9FA` },
+    { id: 1, icon: buy, text: `LOAN2BUY`, color: `#EEFFF3` },
+    { id: 2, icon: roundman, text: `G-AVATAR`, color: `#F5F9FA` },
     {
-      id: 2,
+      id: 3,
       icon: developement,
       text: `NEW GAME DEVELOPMENT FUND`,
       color: `#FFEAF9`,
     },
-    { id: 3, icon: roundman, text: `G-AVATAR`, color: `#F5F9FA` },
-    { id: 4, icon: buy, text: `LOAN2BUY`, color: `#EEFFF3` },
+    { id: 4, icon: g_console, text: `G-PAD`, color: `#F5F9FA` },
     { id: 5, icon: fund, text: `GAMESTA TRADING FUND`, color: `#EBF9FF` },
     {
       id: 6,
@@ -248,8 +248,8 @@ export const treasuryData = {
 };
 
 export const gamestaTandA = {
-  team: `Gamesta Team`,
-  advisors: `Advisors`,
+  head1: `Gamesta Team`,
+  head2: `Advisors`,
   team: [
     {
       id: 0,
@@ -260,8 +260,8 @@ export const gamestaTandA = {
     },
     {
       id: 1,
-      icon: ``,
-      name: cto,
+      icon: cto,
+      name: `Sanjay Jadhav`,
       role: `CTO`,
       text: `Sanjay is a serial techpreneur with 20+ years’ expertise in building scalable disruptive products $MMM honing in on Blockchain, AI, AR & Big Data. He is a visionary and had his Augmented Reality SaaS platform in 2012 serving DIY AR Apps & AR Ecommerce for bluechips. He is passionate about solving real world problems with a customer-centric approach and excels in developing & leading high performance, collaborative and distributed multicultural teams. He is an avid M&A strategist and crypto trader/investor.`,
     },
@@ -310,7 +310,6 @@ export const gamestaTandA = {
       role: `Trustswap`,
       text: `Core Team Member of TrustSwap. Designed tokenomics for various projects and/or serving as a strategic advisor/consultant for multiple projects spanning across DeFi and GameFi like QANX, BlockBank, LedgerScore, Carbon, ISPOLINK, Fidira, Sekuritance, Oneto11, etc. Has a professional background in Engineering with multiple graduate degrees. Has 5+ years experience in the cryptocurrency space.`,
     },
-
     {
       id: 3,
       icon: willy,
