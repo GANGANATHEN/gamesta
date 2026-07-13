@@ -30,6 +30,7 @@ import {
   ceo,
   cmo,
   code,
+  communitybg,
   coo,
   cto,
   developement,
@@ -52,15 +53,21 @@ import {
   logo,
   marketplace,
   nft,
+  post_1,
+  post_2,
+  post_3,
   roundman,
   sam,
   scholarship,
   sundeep,
   telegram,
+  telegram1,
   token,
   twiter,
+  twiter1,
   willy,
   youtube,
+  youtube1,
 } from "../../public/assets/index";
 
 export const navLinks = [
@@ -337,3 +344,35 @@ export const partandinves = [
   c14,
   c15,
 ];
+
+export const blogCommunity = {
+  blog: `Blog`,
+  blogdata: [
+    {
+      id:0,
+      icon: post_1,
+      title: `Introducing Gamesta — A.I. Powered Guild`,
+      time: `4 days ago`,
+      details: `Gamesta Guild believes the value of any game is created by the network of players playing it.`,
+    },
+    {
+      id:1,
+      icon: post_2,
+      title: `Gamesta, A.I. powered Game-Fi guild announce private round sale`,
+      time: `4 days ago`,
+      details: `Vous Media Group to launch A.I. Powered Game-Fi Guild; GAMESTA. Private round sale has commenced.`,
+    },
+    {
+      id:2,
+      icon: post_3,
+      title: `Gamesta, A.I. powered Game-Fi guild partner with Legion Ventures`,
+      time: `4 days ago`,
+      details: `Gamesta ally with Venture Capitalist, ‘Meme-Masters’, Legion Ventures for marketing and community support.`,
+    },
+  ],
+  community: `join our community`,
+  commnuitybg: communitybg,
+  twiter: twiter1,
+  youtube: youtube1,
+  telegram: telegram1,
+};

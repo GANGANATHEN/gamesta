@@ -74,8 +74,24 @@ import c15 from "./partnersandinvesters/c15.svg";
 import handcard from "./gamexcard/handcard.svg";
 import Rectanglebg from "./gamexcard/Rectanglebg.svg";
 import Rectangleblackbg from "./gamexcard/Rectangleblackbg.svg";
+// blog
+import post_1 from "./blog/post1.png";
+import post_2 from "./blog/post2.png";
+import post_3 from "./blog/post3.png";
+// community
+import communitybg from "./community/communitybg.svg";
+import twiter1 from "./community/twitter.svg";
+import youtube1 from "./community/youtube.svg";
+import telegram1 from "./community/telegram.svg";
 
 export {
+  communitybg,
+  twiter1,
+  youtube1,
+  telegram1,
+  post_1,
+  post_2,
+  post_3,
   infinity,
   c1,
   c2,
