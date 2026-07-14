@@ -6,6 +6,7 @@ import { HomePage, PlayToEarn } from "@/lib/dynamic/dynamic";
 import Treasury from "./components/Treasury";
 import Partandinvest from "./components/Partandinvest";
 import Gamestateam from "./components/Gamestateam";
+import Gamesstablog from "./components/Gamesstablog";
 
 const Page = () => {
   // useEffect(() => {
@@ -21,6 +22,7 @@ const Page = () => {
       <Treasury />
       <Gamestateam />
       <Partandinvest />
+      <Gamesstablog />
     </div>
   );
 };

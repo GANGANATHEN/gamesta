@@ -1,6 +1,7 @@
+"use client"
 import React from "react";
-import Gamesstablog from "./Gamesstablog";
 // import FutureApplication from "./FutureApplication";
+import Gamesstablog from "./Gamesstablog";
 
 const page = () => {
   return (

@@ -4,7 +4,6 @@ import gsap from "gsap";
 import Image from "next/image";
 
 export default function Preloader() {
-
   useEffect(() => {
     const tl = gsap.timeline();
 
@@ -46,7 +45,13 @@ export default function Preloader() {
       style={{ clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)" }}
     >
       <div className="w-80 h-80 relative">
-        <Image src="/g.png" alt="logo" fill className="object-contain" />
+        <Image
+          src="/g.png"
+          alt="logo"
+          sizes="200px"
+          fill
+          className="object-contain"
+        />
       </div>
       <h1
         id="logo"
