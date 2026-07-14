@@ -32,15 +32,32 @@ const Gamesstablog = () => {
           ))}
         </div>
       </section>
-      <section className="padding h-205 relative mt-20  w-full flex flex-col justify-center items-center">
+      <section className="padding relative h-205  mt-20 w-full flex flex-col justify-center items-center">
         <Image
           src={blogCommunity.commnuitybg}
           alt="bg"
           className="px-15 absolute top-0 left-0 w-full h-full object-contain border border-accent"
         />
-        <h1 className="z-1 w-[80%] font-moda font-extrabold text-9xl 2xl:text-[200px] uppercase text-center tracking-widest leading-none">
-          {blogCommunity.community}
-        </h1>
+        <div className="relative w-full h-full flex items-center justify-center">
+          <h1 className="-rotate-6 z-1 w-[80%] font-moda font-extrabold text-9xl 2xl:text-[200px] uppercase text-center tracking-widest leading-none">
+            {blogCommunity.community}
+          </h1>
+          <Image
+            src={blogCommunity.telegram}
+            alt={"telegram"}
+            className={"z-1 absolute size-34 top-0 left-0"}
+          />
+          <Image
+            src={blogCommunity.twiter}
+            alt={"twitter"}
+            className={"z-1 absolute size-34 top-0 left-0"}
+          />
+          <Image
+            src={blogCommunity.youtube}
+            alt={"youtube"}
+            className={"z-1 absolute size-34 top-0 left-0"}
+          />
+        </div>
       </section>
     </div>
   );

@@ -1,3 +1,4 @@
+// src/app/template.js
 "use client";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
@@ -6,16 +7,14 @@ export default function Template({ children }) {
   const container = useRef(null);
 
   useEffect(() => {
-    // GSAP Context create pannunga
     const ctx = gsap.context(() => {
       gsap.fromTo(
-        ".page-wrapper",
+        container.current,
         { opacity: 0, y: 20 },
         { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" },
       );
-    }, container); // Scope-ah container-kulla limit pannunga
+    }, container);
 
-    // Cleanup: Ithu thaan antha spacer issue-ah fix pannum
     return () => ctx.revert();
   }, []);
 
