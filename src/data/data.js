@@ -349,21 +349,21 @@ export const blogCommunity = {
   blog: `Blog`,
   blogdata: [
     {
-      id:0,
+      id: 0,
       icon: post_1,
       title: `Introducing Gamesta — A.I. Powered Guild`,
       time: `4 days ago`,
       details: `Gamesta Guild believes the value of any game is created by the network of players playing it.`,
     },
     {
-      id:1,
+      id: 1,
       icon: post_2,
       title: `Gamesta, A.I. powered Game-Fi guild announce private round sale`,
       time: `4 days ago`,
       details: `Vous Media Group to launch A.I. Powered Game-Fi Guild; GAMESTA. Private round sale has commenced.`,
     },
     {
-      id:2,
+      id: 2,
       icon: post_3,
       title: `Gamesta, A.I. powered Game-Fi guild partner with Legion Ventures`,
       time: `4 days ago`,
@@ -375,4 +375,26 @@ export const blogCommunity = {
   twiter: twiter1,
   youtube: youtube1,
   telegram: telegram1,
+};
+
+export const footerData = {
+  rights: `© 2022 Gamesta. All rights reserved.`,
+  links: [
+    { id: 0, link: `/`, name: `Play 2 Earn` },
+    { id: 1, link: `/`, name: `Team` },
+    { id: 2, link: `/`, name: `Terms of service` },
+    { id: 3, link: `/`, name: `Ecosystem` },
+    { id: 4, link: `/`, name: `Partnership` },
+    { id: 5, link: `/`, name: `Privacy policy` },
+    { id: 6, link: `/`, name: `Roadmap` },
+    { id: 7, link: `/`, name: `Contact us` },
+    { id: 8, link: `/`, name: `Whitepaper` },
+  ],
+  joinus: `Join us`,
+  stake: { link: `/`, name: `Stake GSG` },
+  social: [
+    { id: 0, link: `/`, icon: youtube },
+    { id: 1, link: `/`, icon: twiter },
+    { id: 2, link: `/`, icon: telegram },
+  ],
 };

@@ -106,32 +106,38 @@ export const initRevealAnimations = (scope) => {
     });
 
     // ---------------- Grid ----------------
-    gsap.utils.toArray(".animate-grid")?.forEach((grid) => {
-      const cards = grid.querySelectorAll(".animate-card");
+    const grids = gsap.utils.toArray(".animate-grid");
 
-      gsap.fromTo(
-        cards,
-        {
-          opacity: 0,
-          y: 70,
-          scale: 0.95,
-        },
-        {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          stagger: 0.15,
-          ease: "none",
-          scrollTrigger: {
-            trigger: grid,
-            start: "top 82%",
-            end: "top 38%",
-            scrub: true,
-            invalidateOnRefresh: true,
+    if (grids.length) {
+      grids.forEach((grid) => {
+        const cards = grid.querySelectorAll(".animate-card");
+
+        if (!cards.length) return;
+
+        gsap.fromTo(
+          cards,
+          {
+            opacity: 0,
+            y: 70,
+            scale: 0.95,
           },
-        },
-      );
-    });
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            stagger: 0.15,
+            ease: "none",
+            scrollTrigger: {
+              trigger: grid,
+              start: "top 82%",
+              end: "top 38%",
+              scrub: true,
+              invalidateOnRefresh: true,
+            },
+          },
+        );
+      });
+    }
 
     // ---------------- Standalone Card ----------------
     gsap.utils.toArray(".animate-card-single")?.forEach((el) => {
@@ -231,7 +237,6 @@ export const initRevealAnimations = (scope) => {
     });
 
     // console.log("Reveal End", ScrollTrigger.getAll().length);
-
   }, scope);
 
   return () => ctx.revert();

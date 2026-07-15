@@ -125,8 +125,9 @@ export const initHomepageAnimation = (containerRef) => {
       start: "top top",
       end: "+=1000",
       pin: true,
-      scrub: 1,
+      scrub: true,
       invalidateOnRefresh: true,
+      pinType: "transform",
       onRefresh: () => {
         targetOffset = getInitialOffsets();
       },
