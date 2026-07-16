@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { futureApplications } from "@/data/data";
-import { initFutureApplicationAnimation } from "@/lib/animations/futurepageappanim1";
+import { initFutureApplicationAnimation } from "@/lib/animations/futurepageappanim";
 
 export default function FutureApplication() {
   const sectionRef = useRef(null);
@@ -75,18 +75,10 @@ export default function FutureApplication() {
               </h3>
 
               {/* Description Line */}
-              <div
-                className="
-                mt-6 h-1 w-16 rounded-full bg-linear-to-r from-cyan-400 to-sky-500 transition-all duration-500 group-hover:w-28
-              "
-              />
+              <div className="mt-6 h-1 w-16 rounded-full bg-linear-to-r from-cyan-400 to-sky-500 transition-all duration-500 group-hover:w-28" />
 
               {/* Hover Border */}
-              <div
-                className="
-                pointer-events-none absolute inset-0 rounded-4xl border border-white/30 opacity-0 transition duration-500 group-hover:opacity-100
-              "
-              />
+              <div className="pointer-events-none absolute inset-0 rounded-4xl border border-white/30 opacity-0 transition duration-500 group-hover:opacity-100" />
             </div>
           ))}
         </div>

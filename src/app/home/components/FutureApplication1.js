@@ -11,8 +11,8 @@ export default function FutureApplication() {
   return (
     <section className="padding text-[#273A41] py-5 overflow-hidden">
       <div className="relative min-h-screen w-full">
-        {/* Heading */}
 
+        {/* Heading */}
         <div className="sm:absolute sm:top-[5%] sm:left-[25%] z-50 flex flex-col items-center sm:items-end">
           <h2 className="w-fit font-moda font-bold max-[501px]:text-[34px]! text-4xl lg:text-5xl 2xl:text-8xl leading-none text-right max-w-xl">
             {futureApplications.heading}

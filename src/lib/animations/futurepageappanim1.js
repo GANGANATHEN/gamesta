@@ -17,8 +17,7 @@ export const initFutureApplicationAnimation = (containerRef) => {
 
   const mm = gsap.matchMedia();
 
-  mm.add("(min-width: 0px)", () => {
-
+  mm.add("(min-width: 0px)", (context) => {
     // Initial
     gsap.set(heading, { opacity: 0, y: 80, filter: "blur(20px)" });
     gsap.set(button, { opacity: 0, scale: 0.7, y: 30 });
@@ -86,7 +85,6 @@ export const initFutureApplicationAnimation = (containerRef) => {
           yoyo: true,
           ease: "sine.inOut",
         });
-
         floatingAnimations.push(tween);
       });
     }
